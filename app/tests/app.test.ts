@@ -2,34 +2,24 @@ import 'dotenv/config';
 import express from 'express';
 import mongoose from 'mongoose';
 import supertest from 'supertest';
+
 import App from '../app';
-import IndexRoute from '../routes/index.route';
 import { CategoryResolver } from '../resolvers/Category';
+import { ProductResolver } from '../resolvers/Product';
+import { CartResolver } from '../resolvers/Cart';
+import { UserResolver } from '../resolvers/User';
+import { OrderResolver } from '../resolvers/Order';
 
 describe('normal', () => {
   let app: express.Express;
   beforeAll(async () => {
     // console.log("1 - beforeAll");
-    app = await App([new IndexRoute()], [CategoryResolver]);
+    app = await App([CategoryResolver, ProductResolver, UserResolver, CartResolver, OrderResolver]);
   });
   afterAll(async () => {
     // console.log("1 - afterAll");
     mongoose.disconnect();
   });
-
-  test('GET: /', async () => {
-    const request = supertest(app);
-    const response = await request.get('/');
-    expect(response.status).toBe(200);
-    expect(response.body.msg).toEqual('Hello World!');
-  });
-
-  // test('GET: /api-docs', async () => {
-  //   const request = supertest(app);
-  //   const response = await request.get('/api-docs');
-  //   expect(response.status).toBe(200);
-  // });
-
   test('GET: /graphql', async done => {
     const request = supertest(app);
     const query = `

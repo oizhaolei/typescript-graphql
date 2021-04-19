@@ -1,7 +1,5 @@
 import 'dotenv/config';
 import App from './app';
-import IndexRoute from './routes/index.route';
-import UsersRoute from './routes/users.route';
 
 import { UserResolver } from './resolvers/User';
 import { ProductResolver } from './resolvers/Product';
@@ -11,11 +9,10 @@ import { OrderResolver } from './resolvers/Order';
 import validateEnv from './utils/validateEnv';
 
 validateEnv();
-const routes = [new IndexRoute(), new UsersRoute()];
 const resolvers = [CategoryResolver, ProductResolver, UserResolver, CartResolver, OrderResolver];
 
 const main = async () => {
-  const app = await App(routes, resolvers);
+  const app = await App(resolvers);
   const { PORT } = process.env;
   app.listen({ port: PORT }, () => {
     console.log(`🚀 Server ready and listening at ==> http://localhost:${PORT} in ${app.get('env')} mode`);

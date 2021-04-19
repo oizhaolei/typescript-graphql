@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 
 import { User, UserModel } from '../entities/User';
 import { UserInput } from './types/user-input';
+// import { LoginInput } from './types/login-input';
 
 import { Cart, CartModel } from '../entities/Cart';
 
@@ -12,6 +13,17 @@ export class UserResolver {
   async returnSingleUser(@Arg('id') id: string): Promise<User | null> {
     return await UserModel.findById(id);
   }
+
+  // @Mutation(() => String)
+  // async login(@Arg('data') { email, password }: LoginInput): Promise<string | null> {
+  //   const user = await UserModel.findOne({ email: email.toLowerCase() });
+  //   if (!user) {
+  //     throw `email ${email} not found.`;
+  //   }
+  //   const isMatch: boolean = await bcrypt.compare(password, user.password);
+
+  //   return '';
+  // }
 
   @Query(() => [User])
   async returnAllUsers(): Promise<User[]> {

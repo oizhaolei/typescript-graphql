@@ -28,7 +28,7 @@ export class User {
   @Property({ type: () => Role, default: [] })
   roles: Role[];
 
-  @Field(() => Cart)
+  @Field(() => Cart, { nullable: true })
   @Property({ ref: Cart })
   cart?: Ref<Cart>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

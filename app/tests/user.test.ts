@@ -14,7 +14,7 @@ describe('User', () => {
   let app: express.Express;
   beforeAll(async () => {
     // console.log("1 - beforeAll");
-    app = await App([], [CategoryResolver, ProductResolver, UserResolver, CartResolver, OrderResolver]);
+    app = await App([CategoryResolver, ProductResolver, UserResolver, CartResolver, OrderResolver]);
   });
   afterAll(async () => {
     // console.log("1 - afterAll");

@@ -10,7 +10,7 @@ import { Context } from '../interfaces/context.interface';
 @Resolver(() => Order)
 export class OrderResolver {
   @Query(() => Order, { nullable: false })
-  async returnSingleProduct(@Arg('id') id: string): Promise<Order | null> {
+  async returnSingleOrder(@Arg('id') id: string): Promise<Order | null> {
     return await OrderModel.findById(id);
   }
 

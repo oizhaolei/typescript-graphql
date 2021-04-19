@@ -2,14 +2,19 @@ import 'dotenv/config';
 import express from 'express';
 import mongoose from 'mongoose';
 import supertest from 'supertest';
+
 import App from '../app';
 import { CategoryResolver } from '../resolvers/Category';
+import { ProductResolver } from '../resolvers/Product';
+import { CartResolver } from '../resolvers/Cart';
+import { UserResolver } from '../resolvers/User';
+import { OrderResolver } from '../resolvers/Order';
 
 describe('Category', () => {
   let app: express.Express;
   beforeAll(async () => {
     // console.log("1 - beforeAll");
-    app = await App([], [CategoryResolver]);
+    app = await App([CategoryResolver, ProductResolver, UserResolver, CartResolver, OrderResolver]);
   });
   afterAll(async () => {
     // console.log("1 - afterAll");

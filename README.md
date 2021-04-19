@@ -201,9 +201,9 @@ query returnAllOrders {
 
 
 ## TODO
-- swagger api      -- OK
 - coverage         -- OK
 - more tests...
 - pagination
 - passport
+- pub/sub
 - react client
