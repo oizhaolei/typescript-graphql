@@ -14,6 +14,7 @@ import { logger, stream } from './utils/logger';
 
 import { Context } from './interfaces/context.interface';
 import { verifyToken, authChecker } from './utils/auth-checker';
+import { ErrorInterceptor } from './utils/globalMiddleware';
 
 const initializeMiddlewares = (app: express.Express) => {
   if (process.env.NODE_ENV === 'production') {
@@ -64,6 +65,7 @@ const initializeApollo = async (app: express.Express, resolvers: any) => {
     authChecker,
     emitSchemaFile: true,
     validate: false,
+    globalMiddlewares: [ErrorInterceptor],
   });
 
   const server = new ApolloServer({
