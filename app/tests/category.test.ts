@@ -160,6 +160,7 @@ describe('Category', () => {
       const response = await request.post('/graphql').send({
         query,
       });
+      console.log('response.body:', response.body);
       expect(response.status).toBe(200);
     }
     // r
