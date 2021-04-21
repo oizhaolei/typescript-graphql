@@ -24,7 +24,10 @@ describe('normal', () => {
     const request = supertest(app);
     const query = `
     query returnAllCategories {
-      returnAllCategories {
+      returnAllCategories(data: {
+        skip: 0
+        limit: 1024
+      }) {
         id
         name
         description

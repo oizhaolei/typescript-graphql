@@ -29,7 +29,10 @@ describe('Category', () => {
     {
       const query = `
       query returnAllCategories {
-        returnAllCategories {
+        returnAllCategories(data: {
+        skip: 0
+        limit: 1024
+      }) {
           id
           name
           description
@@ -48,7 +51,7 @@ describe('Category', () => {
       const query = `
       mutation createCategory {
         createCategory(data: {
-          name: "woman",
+          name: "woman"
           description: "for woman"
         }) {
           id
@@ -81,7 +84,10 @@ describe('Category', () => {
     {
       const query = `
       query returnAllCategories {
-        returnAllCategories {
+        returnAllCategories(data: {
+        skip: 0
+        limit: 1024
+      }) {
           id
           name
           description
@@ -118,7 +124,7 @@ describe('Category', () => {
         updateCategory(
           id: "${categoryId}",
           data: {
-            name: "girl",
+            name: "girl"
             description: "for girl"
           }
         ) {
@@ -160,7 +166,10 @@ describe('Category', () => {
     {
       const query = `
       query returnAllCategories {
-        returnAllCategories {
+        returnAllCategories(data: {
+        skip: 0
+        limit: 1024
+      }) {
           id
           name
           description
@@ -188,7 +197,10 @@ describe('Category', () => {
     {
       const query = `
       query returnAllCategories {
-        returnAllCategories {
+        returnAllCategories(data: {
+        skip: 0
+        limit: 1024
+      }) {
           id
           name
           description

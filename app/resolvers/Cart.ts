@@ -1,6 +1,7 @@
 import { Resolver, Mutation, Arg, Query, FieldResolver, Root } from 'type-graphql';
 import { Cart, CartModel } from '../entities/Cart';
 import { CartInput } from './types/cart-input';
+import { PaginationInput } from './types/pagination-input';
 
 import { Product, ProductModel } from '../entities/Product';
 
@@ -12,8 +13,8 @@ export class CartResolver {
   }
 
   @Query(() => [Cart])
-  async returnAllCarts(): Promise<Cart[]> {
-    return await CartModel.find();
+  async returnAllCarts(@Arg('data') { skip, limit }: PaginationInput): Promise<Cart[]> {
+    return await CartModel.find().skip(skip).limit(limit);
   }
 
   @Mutation(() => Cart)

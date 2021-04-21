@@ -30,7 +30,7 @@ describe('Product', () => {
       const query = `
       query returnAllProducts {
         returnAllProducts(data: {
-          skip: 0,
+          skip: 0
           limit: 1024
         }) {
           id
@@ -52,7 +52,7 @@ describe('Product', () => {
       const query = `
       mutation createCategory {
         createCategory(data: {
-          name: "woman",
+          name: "woman"
           description: "for woman"
         }) {
           id
@@ -70,7 +70,7 @@ describe('Product', () => {
         const query = `
       mutation createProduct {
         createProduct(data: {
-          name: "woman",
+          name: "woman"
           description: "for woman - ${i}"
           color: "red"
           stock: 11
@@ -125,7 +125,7 @@ describe('Product', () => {
       const query = `
       query returnAllProducts {
         returnAllProducts(data: {
-          skip: 0,
+          skip: 0
           limit: 1024
         }) {
           id
@@ -160,7 +160,7 @@ describe('Product', () => {
       const query = `
       query returnAllProducts {
         returnAllProducts(data: {
-          skip: 0,
+          skip: 0
           limit: 1024
         }) {
           id
@@ -194,7 +194,7 @@ describe('Product', () => {
       const query = `
       query returnAllProducts {
         returnAllProducts(data: {
-          skip: 0,
+          skip: 0
           limit: 1024
         }) {
           id

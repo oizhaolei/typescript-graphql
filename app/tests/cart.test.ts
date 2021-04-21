@@ -29,7 +29,10 @@ describe('Cart', () => {
     {
       const query = `
       query returnAllCarts {
-        returnAllCarts {
+        returnAllCarts(data: {
+        skip: 0
+        limit: 1024
+      }) {
           id
         }
       }`;
@@ -48,7 +51,7 @@ describe('Cart', () => {
       const query = `
       mutation createCategory {
         createCategory(data: {
-          name: "woman",
+          name: "woman"
           description: "for woman"
         }) {
           id
@@ -65,7 +68,7 @@ describe('Cart', () => {
       const query = `
       mutation createProduct {
         createProduct(data: {
-          name: "woman",
+          name: "woman"
           description: "for woman"
           color: "red"
           stock: 11
@@ -144,7 +147,10 @@ describe('Cart', () => {
     {
       const query = `
       query returnAllCarts {
-        returnAllCarts {
+        returnAllCarts(data: {
+        skip: 0
+        limit: 1024
+      }) {
           id
           products {
             id
@@ -205,7 +211,10 @@ describe('Cart', () => {
     {
       const query = `
       query returnAllCarts {
-        returnAllCarts {
+        returnAllCarts(data: {
+        skip: 0
+        limit: 1024
+      }) {
           id
           products {
             id
@@ -243,7 +252,10 @@ describe('Cart', () => {
     {
       const query = `
       query returnAllCarts {
-        returnAllCarts {
+        returnAllCarts(data: {
+        skip: 0
+        limit: 1024
+      }) {
           id
           products {
             id

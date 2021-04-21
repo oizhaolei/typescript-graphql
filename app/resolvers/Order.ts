@@ -6,6 +6,7 @@ import { OrderInput } from './types/order-input';
 import { User, UserModel } from '../entities/User';
 import { Product, ProductModel } from '../entities/Product';
 import { Context } from '../interfaces/context.interface';
+import { PaginationInput } from './types/pagination-input';
 
 @Resolver(() => Order)
 export class OrderResolver {
@@ -15,9 +16,9 @@ export class OrderResolver {
   }
 
   @Query(() => [Order])
-  async returnAllOrders(@Ctx() ctx: Context): Promise<Order[]> {
+  async returnAllOrders(@Ctx() ctx: Context, @Arg('data') { skip, limit }: PaginationInput): Promise<Order[]> {
     console.log('ctx.user', ctx.user);
-    return await OrderModel.find();
+    return await OrderModel.find().skip(skip).limit(limit);
   }
 
   @Mutation(() => Order)

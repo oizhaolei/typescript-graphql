@@ -1,7 +1,7 @@
 import { Resolver, Mutation, Arg, Query } from 'type-graphql';
 import { Category, CategoryModel } from '../entities/Category';
 import { CategoryInput } from './types/category-input';
-// import { Pagination, PaginationInput } from './types/pagination-input';
+import { PaginationInput } from './types/pagination-input';
 import HttpException from '../HttpException';
 import { logger } from '../utils/logger';
 
@@ -13,8 +13,8 @@ export class CategoryResolver {
   }
 
   @Query(() => [Category])
-  async returnAllCategories(): Promise<Category[]> {
-    return await CategoryModel.find();
+  async returnAllCategories(@Arg('data') { skip, limit }: PaginationInput): Promise<Category[]> {
+    return await CategoryModel.find().skip(skip).limit(limit);
   }
 
   // @Query(() => Pagination)

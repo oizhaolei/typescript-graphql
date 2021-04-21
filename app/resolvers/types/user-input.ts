@@ -1,8 +1,9 @@
 import { InputType, Field, ID } from 'type-graphql';
 import { Length, IsEmail } from 'class-validator';
-import { User } from '../../entities/User';
-import { Role } from '../../entities/Role';
 import { ObjectId } from 'mongodb';
+
+import { User } from '../../entities/User';
+import { RoleInput } from './role-input';
 
 @InputType()
 export class UserInput implements Partial<User> {
@@ -18,8 +19,8 @@ export class UserInput implements Partial<User> {
   @IsEmail()
   email: string;
 
-  @Field(() => Role)
-  roles: Role[];
+  @Field(() => [RoleInput])
+  roles: RoleInput[];
 
   @Field(() => ID, { nullable: true })
   cart?: ObjectId;

@@ -13,11 +13,11 @@ import { OrderResolver } from '../resolvers/Order';
 describe('User', () => {
   let app: express.Express;
   beforeAll(async () => {
-    // console.log("1 - beforeAll");
+    // // console.log("1 - beforeAll");
     app = await App([CategoryResolver, ProductResolver, UserResolver, CartResolver, OrderResolver]);
   });
   afterAll(async () => {
-    // console.log("1 - afterAll");
+    // // console.log("1 - afterAll");
 
     mongoose.disconnect();
   });
@@ -29,16 +29,22 @@ describe('User', () => {
     {
       const query = `
       query returnAllUsers {
-        returnAllUsers {
+        returnAllUsers(data: {
+          skip: 0
+          limit: 1024
+        }) {
           id
           username
           email
+          roles {
+            value
+            title
+          }
         }
       }`;
       const response = await request.post('/graphql').send({
         query,
       });
-      console.log('response.body:', response.body);
       expect(response.status).toBe(200);
       expect(response.body.data.returnAllUsers.length).toBeGreaterThanOrEqual(0);
       originLength = response.body.data.returnAllUsers.length;
@@ -49,7 +55,7 @@ describe('User', () => {
       const query = `
       mutation createUser {
         createUser(data: {
-          username: "lei",
+          username: "lei"
           email: "oizhaolei@gmail.com"
           password: "pass"
           roles: [{
@@ -60,12 +66,15 @@ describe('User', () => {
           id
           username
           email
+          roles {
+            value
+            title
+          }
         }
       }`;
       const response = await request.post('/graphql').send({
         query,
       });
-      console.log('response.body:', response.body);
       expect(response.status).toBe(200);
       userId = response.body.data.createUser.id;
       expect(response.body.data.createUser.username).toBe('lei');
@@ -77,6 +86,10 @@ describe('User', () => {
           id
           username
           email
+          roles {
+            value
+            title
+          }
         }
       }`;
       const response = await request.post('/graphql').send({
@@ -88,12 +101,16 @@ describe('User', () => {
     {
       const query = `
       query returnAllUsers {
-        returnAllUsers(first:2 offset:2) {
-          totalCount，
-          data: {
-            id
-            username
-            email
+        returnAllUsers(data: {
+        skip: 0
+        limit: 1024
+      }) {
+          id
+          username
+          email
+          roles {
+            value
+            title
           }
         }
       }`;
@@ -108,14 +125,24 @@ describe('User', () => {
       const query = `
       mutation updateUser {
         updateUser(
-          id: "${userId}",
+          id: "${userId}"
           data: {
-            username: "ray",
+            username: "ray"
+            email: "oizhaolei@gmail.com"
+            password: "pass"
+            roles: [{
+              value: "value"
+              title: "title"
+            }]
           }
         ) {
           id
           username
           email
+          roles {
+            value
+            title
+          }
         }
       }`;
       const response = await request.post('/graphql').send({
@@ -151,10 +178,17 @@ describe('User', () => {
     {
       const query = `
       query returnAllUsers {
-        returnAllUsers {
+        returnAllUsers(data: {
+        skip: 0
+        limit: 1024
+      }) {
           id
           username
           email
+          roles {
+            value
+            title
+          }
         }
       }`;
       const response = await request.post('/graphql').send({
@@ -179,10 +213,17 @@ describe('User', () => {
     {
       const query = `
       query returnAllUsers {
-        returnAllUsers {
+        returnAllUsers(data: {
+        skip: 0
+        limit: 1024
+      }) {
           id
           username
           email
+          roles {
+            value
+            title
+          }
         }
       }`;
       const response = await request.post('/graphql').send({
