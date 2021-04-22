@@ -8,13 +8,11 @@ import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
 import mongoose from 'mongoose';
 
-import passport from './utils/passport';
-import errorMiddleware from './middlewares/error.middleware';
 import { logger, stream } from './utils/logger';
 
 import { Context } from './interfaces/context.interface';
 import { verifyToken, authChecker } from './utils/auth-checker';
-import { ErrorInterceptor } from './utils/globalMiddleware';
+import { ErrorInterceptor } from './middlewares/globalMiddleware';
 
 const initializeMiddlewares = (app: express.Express) => {
   if (process.env.NODE_ENV === 'production') {
@@ -25,9 +23,6 @@ const initializeMiddlewares = (app: express.Express) => {
     app.use(cors({ origin: true, credentials: true }));
   }
 
-  app.use(passport.initialize());
-  app.use(passport.session());
-
   app.use(hpp());
   app.use(
     helmet({
@@ -36,10 +31,6 @@ const initializeMiddlewares = (app: express.Express) => {
   );
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
-};
-
-const initializeErrorHandling = (app: express.Express) => {
-  app.use(errorMiddleware);
 };
 
 // create mongoose connection
@@ -89,7 +80,6 @@ export default async (resolvers: any): Promise<express.Express> => {
   initializeMiddlewares(app);
   await initializeMongoose();
   await initializeApollo(app, resolvers);
-  initializeErrorHandling(app);
 
   return app;
 };

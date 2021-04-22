@@ -3,7 +3,6 @@ import { Resolver, Mutation, Arg, Query, FieldResolver, Root, PubSub, PubSubEngi
 import { Product, ProductModel } from '../entities/Product';
 import { ProductInput } from './types/product-input';
 import { PaginationInput } from './types/pagination-input';
-import HttpException from '../HttpException';
 import { Notification, NotificationPayload } from './types/notification.type';
 
 import { Category, CategoryModel } from '../entities/Category';
@@ -45,7 +44,7 @@ export class ProductResolver {
   @Mutation(() => Boolean)
   async deleteProduct(@Arg('id') id: string): Promise<boolean> {
     const res = await ProductModel.deleteOne({ _id: id });
-    if (res.deletedCount !== 1) throw new HttpException(400, `category  ${id} is not exist.`);
+    if (res.deletedCount !== 1) throw `category  ${id} is not exist.`;
     return true;
   }
 

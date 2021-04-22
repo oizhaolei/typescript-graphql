@@ -2,7 +2,6 @@ import { Resolver, Mutation, Arg, Query } from 'type-graphql';
 import { Category, CategoryModel } from '../entities/Category';
 import { CategoryInput } from './types/category-input';
 import { PaginationInput } from './types/pagination-input';
-import HttpException from '../HttpException';
 import { logger } from '../utils/logger';
 
 @Resolver(() => Category)
@@ -16,14 +15,6 @@ export class CategoryResolver {
   async returnAllCategories(@Arg('data') { skip, limit }: PaginationInput): Promise<Category[]> {
     return await CategoryModel.find().skip(skip).limit(limit);
   }
-
-  // @Query(() => Pagination)
-  // async returnPageCategories(@Arg('data') { skip, limit }: PaginationInput): Promise<Pagination<Category>> {
-  //   const count = await CategoryModel.countDocuments();
-  //   const data = await CategoryModel.find().limit(limit).skip(skip);
-  //   const pagination = new Pagination(count, data);
-  //   return pagination;
-  // }
 
   @Mutation(() => Category)
   async createCategory(@Arg('data') { name, description }: CategoryInput): Promise<Category> {
@@ -55,7 +46,7 @@ export class CategoryResolver {
   @Mutation(() => Boolean)
   async deleteCategory(@Arg('id') id: string): Promise<boolean> {
     const res = await CategoryModel.deleteOne({ _id: id });
-    if (res.deletedCount !== 1) throw new HttpException(400, `category  ${id} is not exist.`);
+    if (res.deletedCount !== 1) throw `category ${id} is not exist.`;
     return true;
   }
 

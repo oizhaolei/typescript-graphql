@@ -15,17 +15,6 @@ export class UserResolver {
     return await UserModel.findById(id);
   }
 
-  // @Mutation(() => String)
-  // async login(@Arg('data') { email, password }: LoginInput): Promise<string | null> {
-  //   const user = await UserModel.findOne({ email: email.toLowerCase() });
-  //   if (!user) {
-  //     throw `email ${email} not found.`;
-  //   }
-  //   const isMatch: boolean = await bcrypt.compare(password, user.password);
-
-  //   return '';
-  // }
-
   @Query(() => [User])
   async returnAllUsers(@Arg('data') { skip, limit }: PaginationInput): Promise<User[]> {
     return await UserModel.find().skip(skip).limit(limit);
