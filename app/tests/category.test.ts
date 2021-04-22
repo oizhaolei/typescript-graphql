@@ -151,7 +151,7 @@ describe('Category', () => {
       expect(response.status).toBe(200);
       expect(response.body.data.deleteCategory).toBeTruthy();
     }
-    // d
+    // delete again
     {
       const query = `
       mutation deleteCategory {

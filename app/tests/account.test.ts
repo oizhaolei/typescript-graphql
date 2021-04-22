@@ -32,6 +32,15 @@ describe('User', () => {
           password: "${op_password}"
         }) {
           token
+          user {
+            id
+            username
+            email
+            roles {
+              value
+              title
+            }
+          }
         }
       }`;
       const response = await request.post('/graphql').send({
@@ -131,7 +140,6 @@ describe('User', () => {
           query,
         })
         .set('Authorization', `Bearer ${op_token}`);
-      console.log('response.body', response.body);
       expect(response.status).toBe(200);
       expect(response.body.data.deleteUser).toBeTruthy();
     }

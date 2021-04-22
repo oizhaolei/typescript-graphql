@@ -1,7 +1,7 @@
 import { Resolver, Mutation, Arg, Authorized, Query, FieldResolver, Root, Ctx } from 'type-graphql';
 import bcrypt from 'bcrypt';
 
-import { User, UserModel } from '../entities/User';
+import { User, UserModel, Pagination } from '../entities/User';
 import { UserInput } from './types/user-input';
 import { LoginInput, LoginResult } from './types/login-input';
 
@@ -22,9 +22,14 @@ export class UserResolver {
   }
 
   @Authorized('ADMIN')
-  @Query(() => [User])
-  async returnAllUsers(@Arg('data') { skip, limit }: PaginationInput): Promise<User[]> {
-    return await UserModel.find().skip(skip).limit(limit);
+  @Query(() => Pagination)
+  async returnAllUsers(@Arg('data') { skip, limit }: PaginationInput): Promise<Pagination> {
+    const totalCount = await UserModel.countDocuments();
+    const data = await UserModel.find().skip(skip).limit(limit);
+    return {
+      totalCount,
+      data,
+    };
   }
 
   @Authorized('ADMIN')
@@ -110,6 +115,7 @@ export class UserResolver {
 
     return {
       token,
+      user,
     };
   }
   // profile

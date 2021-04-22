@@ -50,6 +50,7 @@
   "dependencies": {
     "apollo-server-express": "^2.11.0",
     "bcrypt": "^5.0.1",
+    "chalk": "^4.1.1",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.12.2",
     "cors": "^2.8.5",

@@ -1,5 +1,6 @@
 import { InputType, Field, ObjectType } from 'type-graphql';
 import { Length, IsEmail } from 'class-validator';
+import { User } from '../../entities/User';
 
 @InputType()
 export class LoginInput {
@@ -15,4 +16,6 @@ export class LoginInput {
 export class LoginResult {
   @Field()
   token: string;
+  @Field(() => User)
+  user: User;
 }

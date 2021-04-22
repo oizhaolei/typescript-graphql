@@ -144,17 +144,19 @@ describe('Product', () => {
     }
     // u
     // d
-    await Array.from(Array(10).keys()).map(async i => {
-      const query = `
+    await Promise.all(
+      Array.from(Array(10).keys()).map(async i => {
+        const query = `
       mutation deleteProduct {
         deleteProduct(id: "${productIds[i]}")
       }`;
-      const response = await request.post('/graphql').send({
-        query,
-      });
-      expect(response.status).toBe(200);
-      expect(response.body.data.deleteProduct).toBeTruthy();
-    });
+        const response = await request.post('/graphql').send({
+          query,
+        });
+        expect(response.status).toBe(200);
+        expect(response.body.data.deleteProduct).toBeTruthy();
+      }),
+    );
     // r
     {
       const query = `

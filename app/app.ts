@@ -6,6 +6,7 @@ import hpp from 'hpp';
 import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
 import mongoose from 'mongoose';
+import chalk from 'chalk';
 
 import log4js from './utils/logger';
 
@@ -40,7 +41,7 @@ const initializeMongoose = async () => {
     useUnifiedTopology: true,
   });
   mongoose.set('debug', (coll: string, method: string, query: any, doc: any, options: any) => {
-    logger.debug(`${coll}.${method}.(${JSON.stringify(query)})`, JSON.stringify(doc), options || '');
+    logger.debug(chalk.green(`${coll}.${method}(${JSON.stringify(query)})`, JSON.stringify(doc), options || ''));
   });
   logger.info('🟢 The database is connected.');
 };
@@ -61,6 +62,8 @@ const initializeApollo = async (app: express.Express, resolvers: any) => {
   const server = new ApolloServer({
     schema,
     context: async ({ req }) => {
+      logger.info('query', chalk.magenta(req.body.query));
+      req.body.variables && logger.info('variables', req.body.variables);
       // Get the user token from the headers.
       const user = await verifyToken(req.headers.authorization || '');
       // add the user to the context

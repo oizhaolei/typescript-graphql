@@ -36,3 +36,12 @@ export class User {
 }
 
 export const UserModel = getModelForClass(User);
+
+@ObjectType({ description: 'The pagination model' })
+export class Pagination {
+  @Field()
+  totalCount: number;
+
+  @Field(() => [User])
+  data: User[];
+}

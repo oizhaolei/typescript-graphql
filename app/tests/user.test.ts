@@ -61,12 +61,15 @@ describe('User', () => {
           skip: 0
           limit: 1024
         }) {
-          id
-          username
-          email
-          roles {
-            value
-            title
+          totalCount
+          data {
+            id
+            username
+            email
+            roles {
+              value
+              title
+            }
           }
         }
       }`;
@@ -77,8 +80,8 @@ describe('User', () => {
         })
         .set('Authorization', `Bearer ${op_token}`);
       expect(response.status).toBe(200);
-      expect(response.body.data.returnAllUsers.length).toBeGreaterThanOrEqual(0);
-      originLength = response.body.data.returnAllUsers.length;
+      expect(response.body.data.returnAllUsers.totalCount).toBeGreaterThanOrEqual(0);
+      originLength = response.body.data.returnAllUsers.totalCount;
     }
     // c
     let userId;
@@ -140,15 +143,18 @@ describe('User', () => {
       const query = `
       query returnAllUsers {
         returnAllUsers(data: {
-        skip: 0
-        limit: 1024
-      }) {
-          id
-          username
-          email
-          roles {
-            value
-            title
+          skip: 0
+          limit: 1024
+        }) {
+          totalCount
+          data {
+            id
+            username
+            email
+            roles {
+              value
+              title
+            }
           }
         }
       }`;
@@ -159,7 +165,7 @@ describe('User', () => {
         })
         .set('Authorization', `Bearer ${op_token}`);
       expect(response.status).toBe(200);
-      expect(response.body.data.returnAllUsers.length).toBe(originLength + 1);
+      expect(response.body.data.returnAllUsers.totalCount).toBe(originLength + 1);
     }
     // u
     {
@@ -229,15 +235,18 @@ describe('User', () => {
       const query = `
       query returnAllUsers {
         returnAllUsers(data: {
-        skip: 0
-        limit: 1024
-      }) {
-          id
-          username
-          email
-          roles {
-            value
-            title
+          skip: 0
+          limit: 1024
+        }) {
+          totalCount
+          data {
+            id
+            username
+            email
+            roles {
+              value
+              title
+            }
           }
         }
       }`;
@@ -248,7 +257,7 @@ describe('User', () => {
         })
         .set('Authorization', `Bearer ${op_token}`);
       expect(response.status).toBe(200);
-      expect(response.body.data.returnAllUsers.length).toBe(originLength);
+      expect(response.body.data.returnAllUsers.totalCount).toBe(originLength);
     }
   });
 });
