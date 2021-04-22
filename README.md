@@ -200,10 +200,15 @@ query returnAllOrders {
 ```
 
 
+## Seed
+```
+db.users.insert({"username" : "lei", "email" : "oizhaolei@gmail.com", "password" : "$2b$10$BOl5XcBlAXTkrwnRWoxM5uggwqPdKZroJrml/sIVthEmNphZ2x6Iu", "roles" : [ { value:"ADMIN", title: "ADMIN" }]});
+
+db.users.remove({roles: {$nin: [ { value:"ADMIN", title: "ADMIN" }]}});
+```
 ## TODO
 - coverage         -- OK
 - more tests...
 - pagination
-- passport
 - pub/sub
 - react client

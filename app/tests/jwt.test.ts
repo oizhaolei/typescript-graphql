@@ -4,11 +4,9 @@ import { User } from '../entities/User';
 describe('jwt', () => {
   test('normal', async () => {
     const user = {
-      id: 'id',
-      username: 'username',
-      password: 'password',
+      _id: '60812f62d46dcf31d97850ef',
+      username: 'xx@gmail.com',
       email: 'email',
-      roles: ['ADMIN'],
     };
 
     const token: string = sign(user);

@@ -182,7 +182,7 @@ describe('Category', () => {
       expect(response.status).toBe(200);
       expect(response.body.data.returnAllCategories.length).toBe(originLength);
     }
-    // da
+    // delete all
     {
       const query = `
       mutation deleteAllCategories {

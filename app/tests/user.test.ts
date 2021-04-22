@@ -9,12 +9,40 @@ import { ProductResolver } from '../resolvers/Product';
 import { CartResolver } from '../resolvers/Cart';
 import { UserResolver } from '../resolvers/User';
 import { OrderResolver } from '../resolvers/Order';
+import log4js from '../utils/logger';
 
+const logger = log4js('tests/user');
+
+const op_email = 'oizhaolei@gmail.com';
+const op_password = 'pass';
 describe('User', () => {
   let app: express.Express;
+  let op_token: string;
   beforeAll(async () => {
     // // console.log("1 - beforeAll");
     app = await App([CategoryResolver, ProductResolver, UserResolver, CartResolver, OrderResolver]);
+
+    // login
+    const request = supertest(app);
+    {
+      const query = `
+      mutation login {
+        login(data: {
+          email: "${op_email}"
+          password: "${op_password}"
+        }) {
+          token
+        }
+      }`;
+      const response = await request
+        .post('/graphql')
+        .send({
+          query,
+        })
+        .set('Authorization', `Bearer ${op_token}`);
+      expect(response.status).toBe(200);
+      op_token = response.body.data.login.token;
+    }
   });
   afterAll(async () => {
     // // console.log("1 - afterAll");
@@ -42,9 +70,12 @@ describe('User', () => {
           }
         }
       }`;
-      const response = await request.post('/graphql').send({
-        query,
-      });
+      const response = await request
+        .post('/graphql')
+        .send({
+          query,
+        })
+        .set('Authorization', `Bearer ${op_token}`);
       expect(response.status).toBe(200);
       expect(response.body.data.returnAllUsers.length).toBeGreaterThanOrEqual(0);
       originLength = response.body.data.returnAllUsers.length;
@@ -56,7 +87,7 @@ describe('User', () => {
       mutation createUser {
         createUser(data: {
           username: "lei"
-          email: "oizhaolei@gmail.com"
+          email: "john1@gmail.com"
           password: "pass"
           roles: [{
             value: "value"
@@ -72,9 +103,13 @@ describe('User', () => {
           }
         }
       }`;
-      const response = await request.post('/graphql').send({
-        query,
-      });
+      const response = await request
+        .post('/graphql')
+        .send({
+          query,
+        })
+        .set('Authorization', `Bearer ${op_token}`);
+      logger.debug('createUser', response.body.data);
       expect(response.status).toBe(200);
       userId = response.body.data.createUser.id;
       expect(response.body.data.createUser.username).toBe('lei');
@@ -92,9 +127,12 @@ describe('User', () => {
           }
         }
       }`;
-      const response = await request.post('/graphql').send({
-        query,
-      });
+      const response = await request
+        .post('/graphql')
+        .send({
+          query,
+        })
+        .set('Authorization', `Bearer ${op_token}`);
       expect(response.status).toBe(200);
       expect(response.body.data.returnSingleUser.username).toBe('lei');
     }
@@ -114,9 +152,12 @@ describe('User', () => {
           }
         }
       }`;
-      const response = await request.post('/graphql').send({
-        query,
-      });
+      const response = await request
+        .post('/graphql')
+        .send({
+          query,
+        })
+        .set('Authorization', `Bearer ${op_token}`);
       expect(response.status).toBe(200);
       expect(response.body.data.returnAllUsers.length).toBe(originLength + 1);
     }
@@ -128,7 +169,7 @@ describe('User', () => {
           id: "${userId}"
           data: {
             username: "ray"
-            email: "oizhaolei@gmail.com"
+            email: "john2@gmail.com"
             password: "pass"
             roles: [{
               value: "value"
@@ -145,9 +186,12 @@ describe('User', () => {
           }
         }
       }`;
-      const response = await request.post('/graphql').send({
-        query,
-      });
+      const response = await request
+        .post('/graphql')
+        .send({
+          query,
+        })
+        .set('Authorization', `Bearer ${op_token}`);
       expect(response.status).toBe(200);
       expect(response.body.data.updateUser.username).toBe('ray');
     }
@@ -157,9 +201,12 @@ describe('User', () => {
       mutation deleteUser {
         deleteUser(id: "${userId}")
       }`;
-      const response = await request.post('/graphql').send({
-        query,
-      });
+      const response = await request
+        .post('/graphql')
+        .send({
+          query,
+        })
+        .set('Authorization', `Bearer ${op_token}`);
       expect(response.status).toBe(200);
       expect(response.body.data.deleteUser).toBeTruthy();
     }
@@ -169,9 +216,12 @@ describe('User', () => {
       mutation deleteUser {
         deleteUser(id: "${userId}")
       }`;
-      const response = await request.post('/graphql').send({
-        query,
-      });
+      const response = await request
+        .post('/graphql')
+        .send({
+          query,
+        })
+        .set('Authorization', `Bearer ${op_token}`);
       expect(response.status).toBe(200);
     }
     // r
@@ -191,46 +241,14 @@ describe('User', () => {
           }
         }
       }`;
-      const response = await request.post('/graphql').send({
-        query,
-      });
+      const response = await request
+        .post('/graphql')
+        .send({
+          query,
+        })
+        .set('Authorization', `Bearer ${op_token}`);
       expect(response.status).toBe(200);
       expect(response.body.data.returnAllUsers.length).toBe(originLength);
-    }
-    // da
-    {
-      const query = `
-      mutation deleteAllUsers {
-        deleteAllUsers
-      }`;
-      const response = await request.post('/graphql').send({
-        query,
-      });
-      expect(response.status).toBe(200);
-      expect(response.body.data.deleteAllUsers).toBeTruthy();
-    }
-    // r
-    {
-      const query = `
-      query returnAllUsers {
-        returnAllUsers(data: {
-        skip: 0
-        limit: 1024
-      }) {
-          id
-          username
-          email
-          roles {
-            value
-            title
-          }
-        }
-      }`;
-      const response = await request.post('/graphql').send({
-        query,
-      });
-      expect(response.status).toBe(200);
-      expect(response.body.data.returnAllUsers.length).toBe(0);
     }
   });
 });

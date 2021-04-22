@@ -3,23 +3,22 @@ import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
 import hpp from 'hpp';
-import morgan from 'morgan';
 import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
 import mongoose from 'mongoose';
 
-import { logger, stream } from './utils/logger';
+import log4js from './utils/logger';
 
 import { Context } from './interfaces/context.interface';
 import { verifyToken, authChecker } from './utils/auth-checker';
 import { ErrorInterceptor } from './middlewares/globalMiddleware';
 
+const logger = log4js('app.ts');
+
 const initializeMiddlewares = (app: express.Express) => {
   if (process.env.NODE_ENV === 'production') {
-    app.use(morgan('combined', { stream }));
     app.use(cors({ origin: 'your.domain.com', credentials: true }));
   } else if (process.env.NODE_ENV === 'development') {
-    app.use(morgan('dev', { stream }));
     app.use(cors({ origin: true, credentials: true }));
   }
 

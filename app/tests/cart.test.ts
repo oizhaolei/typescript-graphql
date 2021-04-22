@@ -236,7 +236,7 @@ describe('Cart', () => {
       expect(response.status).toBe(200);
       expect(response.body.data.returnAllCarts.length).toBe(originLength);
     }
-    // da
+    // delete all
     {
       const query = `
       mutation deleteAllCarts {

@@ -19,8 +19,8 @@ export class UserInput implements Partial<User> {
   @IsEmail()
   email: string;
 
-  @Field(() => [RoleInput])
-  roles: RoleInput[];
+  @Field(() => [RoleInput], { nullable: true })
+  roles?: RoleInput[];
 
   @Field(() => ID, { nullable: true })
   cart?: ObjectId;

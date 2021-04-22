@@ -21,7 +21,7 @@ export class User {
   password: string;
 
   @Field()
-  @Property({ required: true })
+  @Property({ required: true, unique: true })
   email: string;
 
   @Field(() => [Role])

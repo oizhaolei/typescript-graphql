@@ -1,6 +1,5 @@
 import fs from 'fs';
-import winston from 'winston';
-import winstonDaily from 'winston-daily-rotate-file';
+import log4js, { Logger } from 'log4js';
 
 // logs dir
 const logDir = 'logs';
@@ -9,68 +8,27 @@ if (!fs.existsSync(logDir)) {
   fs.mkdirSync(logDir);
 }
 
-// winston format
-const { combine, timestamp, printf } = winston.format;
-
-// Define log format
-const logFormat = printf(({ timestamp, level, message }) => `${timestamp} ${level}: ${message}`);
-
-/*
- * Log Level
- * error: 0, warn: 1, info: 2, http: 3, verbose: 4, debug: 5, silly: 6
- */
-const logger = winston.createLogger({
-  format: combine(
-    timestamp({
-      format: 'YYYY-MM-DD HH:mm:ss',
-    }),
-    logFormat,
-  ),
-  transports: [
-    // debug log setting
-    new winstonDaily({
+log4js.configure({
+  appenders: {
+    stdout: {
+      type: 'stdout',
+    },
+    demo: {
+      type: 'dateFile',
+      filename: `${logDir}/demo.log`,
+      compress: true,
+    },
+  },
+  categories: {
+    default: {
+      appenders: ['stdout', 'demo'],
       level: 'debug',
-      datePattern: 'YYYY-MM-DD',
-      dirname: logDir + '/debug', // log file /logs/info/*.log in save
-      filename: `%DATE%.log`,
-      maxFiles: 30, // 30 Days saved
-      json: false,
-      zippedArchive: true,
-    }),
-    // info log setting
-    new winstonDaily({
-      level: 'info',
-      datePattern: 'YYYY-MM-DD',
-      dirname: logDir + '/info', // log file /logs/info/*.log in save
-      filename: `%DATE%.log`,
-      maxFiles: 30, // 30 Days saved
-      json: false,
-      zippedArchive: true,
-    }),
-    // error log setting
-    new winstonDaily({
-      level: 'error',
-      datePattern: 'YYYY-MM-DD',
-      dirname: logDir + '/error', // log file /logs/error/*.log in save
-      filename: `%DATE%.error.log`,
-      maxFiles: 30, // 30 Days saved
-      handleExceptions: true,
-      json: false,
-      zippedArchive: true,
-    }),
-  ],
+    },
+  },
 });
 
-logger.add(
-  new winston.transports.Console({
-    format: winston.format.combine(winston.format.splat(), winston.format.colorize(), winston.format.simple()),
-  }),
-);
-
-const stream = {
-  write: (message: string): void => {
-    logger.info(message.substring(0, message.lastIndexOf('\n')));
-  },
+export default (name: string): Logger => {
+  const logger = log4js.getLogger(name);
+  logger.level = 'debug';
+  return logger;
 };
-
-export { logger, stream };

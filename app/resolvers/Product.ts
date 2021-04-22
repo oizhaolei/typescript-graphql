@@ -6,7 +6,9 @@ import { PaginationInput } from './types/pagination-input';
 import { Notification, NotificationPayload } from './types/notification.type';
 
 import { Category, CategoryModel } from '../entities/Category';
-import { logger } from '../utils/logger';
+import log4js from '../utils/logger';
+
+const logger = log4js('resolvers/Product');
 
 @Resolver(() => Product)
 export class ProductResolver {

@@ -29,11 +29,15 @@ export const verifyToken = async (authorization: string, opts?: Partial<jwt.Veri
         audience: jwtOptions.audience,
       };
 
-      const user = await jwt.verify(token, jwtOptions.publicKey, {
+      const userDoc: any = await jwt.verify(token, jwtOptions.publicKey, {
         ...defaultVerifyOptions,
         ...opts,
       });
-      return Object.assign(new User(), user);
+
+      return Object.assign(new User(), {
+        ...userDoc,
+        id: userDoc._id,
+      });
     } catch (e) {
       return User.anonymous;
     }

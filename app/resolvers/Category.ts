@@ -2,7 +2,9 @@ import { Resolver, Mutation, Arg, Query } from 'type-graphql';
 import { Category, CategoryModel } from '../entities/Category';
 import { CategoryInput } from './types/category-input';
 import { PaginationInput } from './types/pagination-input';
-import { logger } from '../utils/logger';
+import log4js from '../utils/logger';
+
+const logger = log4js('resolvers/Category');
 
 @Resolver(() => Category)
 export class CategoryResolver {

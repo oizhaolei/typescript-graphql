@@ -177,7 +177,7 @@ describe('Product', () => {
       expect(response.status).toBe(200);
       expect(response.body.data.returnAllProducts.length).toBe(originLength);
     }
-    // da
+    // delete all
     {
       const query = `
       mutation deleteAllProducts {
